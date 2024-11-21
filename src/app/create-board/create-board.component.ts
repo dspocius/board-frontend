@@ -1,4 +1,4 @@
-import { Component, inject  } from '@angular/core';
+import { Component, inject, Output, EventEmitter  } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 
@@ -10,16 +10,19 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './create-board.component.scss'
 })
 export class CreateBoardComponent {
+  @Output() newItemEvent = new EventEmitter<any>();
+
+  boardCreated(data: any) {
+    this.newItemEvent.emit(data);
+  }
   httpClient = inject(HttpClient);
   about = "";
   public data: Array<any> = [];
   create() {
-    console.log("ASD",this.about);
     this.httpClient.post('http://localhost:3000/board', {name: this.about})
       .subscribe({
         next: (data: any) => {
-          console.log(data);
-          this.data = data;
+          this.boardCreated(data);
         }, error: (err) => console.log(err)
       });
   }

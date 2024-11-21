@@ -1,0 +1,12 @@
+<app-create-entry (newItemEvent)="itemCreated($event)" board_id="{{board_id}}"></app-create-entry>
+@for (item of entries; track item) {
+    <div class="toast show my-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            {{item.name}}
+          <div class="mt-2 pt-2 border-top">
+            <button type="button" class="btn btn-primary btn-sm me-2">Edit</button>
+            <app-confirm button="Delete" title="Do you really want to delete entry?" (confirm)="delete(item.id)"></app-confirm>
+          </div>
+        </div>
+      </div>
+}

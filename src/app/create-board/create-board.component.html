@@ -1,3 +1,14 @@
-<h2>Create Board</h2>
-<textarea [(ngModel)]="about"></textarea>
-<button (click)="create()">Create</button>
+<div class="board-container border p-3 m-2 align-top d-inline-block
+">
+    <div class="form-group">
+        <div class="">Create board</div>
+        <div class="row">
+            <div class="col-8">
+                <input [(ngModel)]="about" name="about" class="form-control" type="text"  />
+            </div>
+            <div class="col">
+                <button (click)="create()" class="btn btn-primary" type="submit">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
