@@ -4,7 +4,7 @@
         <div class="toast-body">
             {{item.name}}
           <div class="mt-2 pt-2 border-top">
-            <button type="button" class="btn btn-primary btn-sm me-2">Edit</button>
+            <app-edit-entry button="Edit" [data]="item" title="Edit entry" (confirm)="confirmEdit($event)"></app-edit-entry>
             <app-confirm button="Delete" title="Do you really want to delete entry?" (confirm)="delete(item.id)"></app-confirm>
           </div>
         </div>

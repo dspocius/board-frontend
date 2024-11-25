@@ -4,23 +4,25 @@ import {AbstractControl, FormBuilder, Validators, FormsModule, ReactiveFormsModu
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-edit-board',
+  selector: 'app-edit-entry',
   standalone: true,
   imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule,CommonModule],
-  templateUrl: './edit-board.component.html',
-  styleUrl: './edit-board.component.scss'
+  templateUrl: './edit-entry.component.html',
+  styleUrl: './edit-entry.component.scss'
 })
-export class EditBoardComponent {
+export class EditEntryComponent {
   @Input() title:string = "";
-  @Input() data:{id: number, name: string} = {
+  @Input() data:{id: number, name: string, description: string} = {
     id: 0,
-    name: ''
+    name: '',
+    description: ''
   };
   @Input() button:string = "";
-  @Output() confirm = new EventEmitter<{id: number, name: string}>();
+  @Output() confirm = new EventEmitter<{id: number, name: string, description: string}>();
 
   loginForm = this.formBuilder.group({
-    name: ['', [Validators.required]]
+    name: ['', [Validators.required]],
+    description: ['']
   })
   constructor(private formBuilder: FormBuilder) {}
   onSubmit(modal: any) {
@@ -28,7 +30,7 @@ export class EditBoardComponent {
       return;
     }
     const data = this.loginForm.value;
-    this.confirm.emit({id: this.data.id, name: this.loginForm.value.name ? this.loginForm.value.name : "" });
+    this.confirm.emit({id: this.data.id, name: this.loginForm.value.name ? this.loginForm.value.name : "", description: this.loginForm.value.description ? this.loginForm.value.description : "" });
     modal.dismiss('Cross click');
   }
   get controls(): { [p: string]: AbstractControl } {
@@ -39,7 +41,7 @@ export class EditBoardComponent {
   closeResult = '';
   
   open(content: TemplateRef<any>) {
-    this.loginForm.setValue({ name: this.data.name});
+    this.loginForm.setValue({ name: this.data.name, description: this.data.description});
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
