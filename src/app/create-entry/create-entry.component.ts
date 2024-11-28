@@ -22,7 +22,7 @@ export class CreateEntryComponent {
   public data: Array<any> = [];
   create() {
     this.httpClient.post('http://localhost:3000/entries', {name: this.name, email:"anonymous", 
-      board_id: parseInt(this.board_id), is_project:0, description: ""})
+      board_id: parseInt(this.board_id), is_project:0, position: 0, description: ""})
       .subscribe({
         next: (data: any) => {
           this.addNewItem(data);

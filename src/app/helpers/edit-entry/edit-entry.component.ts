@@ -13,14 +13,15 @@ import {CommonModule} from "@angular/common";
 export class EditEntryComponent {
   @Input() title:string = "";
   @Input() boards:Array<{id: number, name: string}> = [];
-  @Input() data:{id: number, board_id: number, name: string, description: string} = {
+  @Input() data:{id: number, position: number, board_id: number, name: string, description: string} = {
     id: 0,
     name: '',
     description: '',
+    position: 0,
     board_id: 0
   };
   @Input() button:string = "";
-  @Output() confirm = new EventEmitter<{id: number, board_id: number, name: string, description: string}>();
+  @Output() confirm = new EventEmitter<{id: number, position: number, board_id: number, name: string, description: string}>();
 
   loginForm = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -32,7 +33,7 @@ export class EditEntryComponent {
     if (this.loginForm.invalid) {
       return;
     }
-    this.confirm.emit({id: this.data.id, board_id: this.loginForm.value.board_id ? this.loginForm.value.board_id : -1, name: this.loginForm.value.name ? this.loginForm.value.name : "", description: this.loginForm.value.description ? this.loginForm.value.description : "" });
+    this.confirm.emit({id: this.data.id, position: this.data.position, board_id: this.loginForm.value.board_id ? this.loginForm.value.board_id : -1, name: this.loginForm.value.name ? this.loginForm.value.name : "", description: this.loginForm.value.description ? this.loginForm.value.description : "" });
     modal.dismiss('Cross click');
   }
   get controls(): { [p: string]: AbstractControl } {

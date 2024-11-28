@@ -48,13 +48,39 @@ export class EntriesComponent {
     if (event.previousContainer.data.board_id !== event.container.data.board_id) {
       this.entries.push(event.item.data);
       event.item.element.nativeElement.remove();
-
-      this.confirmEdit({ id: event.item.data.id, board_id: parseInt(event.container.data.board_id.toString()), 
+      let position = event.currentIndex;
+      
+      if (event.container.data.entries.length > 0) {
+        if (event.currentIndex == 0) {
+          let findSmallest = event.container.data.entries.reduce(function(prev:any, curr:any) {
+            return prev.position < curr.position ? prev : curr;
+          });
+          position = findSmallest.position-1;
+        } else {
+          if (event.container.data.entries.length == (event.currentIndex+1)) {
+            let findBiggest = event.container.data.entries.reduce(function(prev:any, curr:any) {
+              return prev.position > curr.position ? prev : curr;
+            });
+            position = findBiggest.position+1;
+          } else {
+            if (event.container.data.entries[event.currentIndex-1] && event.container.data.entries[event.currentIndex]) {
+              position = (event.container.data.entries[event.currentIndex].position + event.container.data.entries[event.currentIndex-1].position)/2;
+            } else if (event.container.data.entries[event.currentIndex]) {
+              let cind = event.container.data.entries[event.currentIndex].position;    
+              position = cind == 0 ? 1 : cind < 0 ? cind/2 : cind/2;
+            } else if (event.container.data.entries[event.currentIndex-1]) {
+              let cind = event.container.data.entries[event.currentIndex-1].position;  
+              position = cind == 0 ? 1 : cind < 0 ? cind/2 : cind/2;
+            }
+          }
+        }
+      }
+      this.confirmEdit({ id: event.item.data.id, position: position, board_id: parseInt(event.container.data.board_id.toString()), 
         name: event.item.data.name, description: event.item.data.description },true);
-    }
+      }
   }
-  confirmEdit(data: {id: number, board_id: number, name: string, description: string}, force:boolean) {
-      this.httpClient.put('http://localhost:3000/entries/'+data.id, { name: data.name, description: data.description, board_id: parseInt(data.board_id.toString())  })
+  confirmEdit(data: {id: number, position: number, board_id: number, name: string, description: string}, force:boolean) {
+      this.httpClient.put('http://localhost:3000/entries/'+data.id, { name: data.name, position: data.position, description: data.description, board_id: parseInt(data.board_id.toString())  })
       .subscribe({
         next: (datag: any) => {
           if (data.board_id.toString() != this.board_id.toString() || force) {
