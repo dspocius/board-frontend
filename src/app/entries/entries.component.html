@@ -1,12 +1,14 @@
 <app-create-entry (newItemEvent)="itemCreated($event)" board_id="{{board_id}}"></app-create-entry>
+<div class="drop_here" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="entry_data">
 @for (item of entries; track item) {
-    <div class="toast show my-3" role="alert" aria-live="assertive" aria-atomic="true">
+    <div cdkDrag [cdkDragData]="item" class="toast show my-3" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
             {{item.name}}
           <div class="mt-2 pt-2 border-top">
-            <app-edit-entry button="Edit" [data]="item" title="Edit entry" (confirm)="confirmEdit($event)"></app-edit-entry>
+            <app-edit-entry button="Edit" [boards]="boards" [data]="item" title="Edit entry" (confirm)="confirmEdit($event,false)"></app-edit-entry>
             <app-confirm button="Delete" title="Do you really want to delete entry?" (confirm)="delete(item.id)"></app-confirm>
           </div>
         </div>
       </div>
 }
+</div>

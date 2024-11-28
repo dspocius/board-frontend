@@ -5,11 +5,20 @@ import { EntriesComponent } from './../entries/entries.component';
 import { CreateBoardComponent } from './../create-board/create-board.component';
 import { ConfirmComponent } from './../helpers/confirm/confirm.component';
 import { EditBoardComponent } from './../helpers/edit-board/edit-board.component';
+import {
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,EntriesComponent,CreateBoardComponent,ConfirmComponent,EditBoardComponent],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, HttpClientModule,FormsModule,EntriesComponent,CreateBoardComponent,ConfirmComponent,EditBoardComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -31,9 +40,8 @@ export class BoardComponent {
         }, error: (err) => console.log(err)
       });
   }
-  
+
   confirmEdit(data: {id: number, name: string}) {
-console.log("ASD",data)
     this.httpClient.put('http://localhost:3000/board/'+data.id, {name:data.name})
     .subscribe({
       next: (data: any) => {

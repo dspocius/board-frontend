@@ -12,25 +12,27 @@ import {CommonModule} from "@angular/common";
 })
 export class EditEntryComponent {
   @Input() title:string = "";
-  @Input() data:{id: number, name: string, description: string} = {
+  @Input() boards:Array<{id: number, name: string}> = [];
+  @Input() data:{id: number, board_id: number, name: string, description: string} = {
     id: 0,
     name: '',
-    description: ''
+    description: '',
+    board_id: 0
   };
   @Input() button:string = "";
-  @Output() confirm = new EventEmitter<{id: number, name: string, description: string}>();
+  @Output() confirm = new EventEmitter<{id: number, board_id: number, name: string, description: string}>();
 
   loginForm = this.formBuilder.group({
     name: ['', [Validators.required]],
-    description: ['']
+    description: [''],
+    board_id: [0]
   })
   constructor(private formBuilder: FormBuilder) {}
   onSubmit(modal: any) {
     if (this.loginForm.invalid) {
       return;
     }
-    const data = this.loginForm.value;
-    this.confirm.emit({id: this.data.id, name: this.loginForm.value.name ? this.loginForm.value.name : "", description: this.loginForm.value.description ? this.loginForm.value.description : "" });
+    this.confirm.emit({id: this.data.id, board_id: this.loginForm.value.board_id ? this.loginForm.value.board_id : -1, name: this.loginForm.value.name ? this.loginForm.value.name : "", description: this.loginForm.value.description ? this.loginForm.value.description : "" });
     modal.dismiss('Cross click');
   }
   get controls(): { [p: string]: AbstractControl } {
@@ -41,7 +43,7 @@ export class EditEntryComponent {
   closeResult = '';
   
   open(content: TemplateRef<any>) {
-    this.loginForm.setValue({ name: this.data.name, description: this.data.description});
+    this.loginForm.setValue({ name: this.data.name, board_id: this.data.board_id, description: this.data.description});
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;

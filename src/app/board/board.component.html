@@ -1,5 +1,7 @@
+<div class="float-left">
 <create-board (newItemEvent)="itemCreated($event)"></create-board>
-
+</div>
+<div cdkDropListGroup>
 @for (item of data; track item) {
 <div class="board-container border p-3 m-2 align-top d-inline-block
 ">
@@ -12,7 +14,7 @@
           </div>
         </div>
       </div>
-
-    <app-entries board_id="{{item.id}}"></app-entries>
+      <app-entries (reloadBoard)="get()" [boards]="data" board_id="{{item.id}}"></app-entries>
 </div>
 }
+</div>

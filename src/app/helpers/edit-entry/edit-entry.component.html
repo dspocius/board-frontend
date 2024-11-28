@@ -14,8 +14,16 @@
 				</div>
 				</div>
 				<div class="form-group">
-				<label for="description">Description</label>
-				<input id="description" type="text" formControlName="description" class="form-control">
+					<label for="description">Description</label>
+					<input id="description" type="text" formControlName="description" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="boards">Move to board</label>
+					<select id="boards" formControlName="board_id" class="form-control">
+						@for (board of boards; track board.id) {
+							<option [selected]="board.id === data.board_id" [value]="board.id">{{board.name}}</option>
+						}
+					</select>
 				</div>
 			</div>
 			<div class="form-group modal-footer">
