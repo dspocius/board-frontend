@@ -23,6 +23,10 @@ export class AuthService {
     return this.httpClient.post('http://localhost:3000/auth/login', {email: credentials.email, password:credentials.password});
   }
 
+  register(credentials: { email: string; password: string }) {
+    return this.httpClient.post('http://localhost:3000/auth/register', {email: credentials.email, password:credentials.password});
+  }
+
   logout() {
     localStorage.removeItem(this.authTokenKey);
     this._isLoggedIn.next(false);
